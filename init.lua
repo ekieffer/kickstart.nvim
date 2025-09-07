@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -234,6 +234,12 @@ end
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
+vim.g.lazy_events_config = {
+  simple = {
+    LazyFile = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
+  },
+}
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -248,6 +254,8 @@ rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
+  -- Make sure this is the **first** plugin**:
+  { 'bwpge/lazy-events.nvim', import = 'lazy-events.import', lazy = false },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -271,16 +279,61 @@ require('lazy').setup({
   -- options to `gitsigns.nvim`.
   --
   -- See `:help gitsigns` to understand what the configuration keys do
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
+  {
     'lewis6991/gitsigns.nvim',
+    event = 'LazyFile',
     opts = {
       signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
+        add = { text = '+-+' },
+        change = { text = '▎' },
+        delete = { text = '' },
+        topdelete = { text = '' },
+        changedelete = { text = '▎' },
+        untracked = { text = '▎' },
       },
+      signs_staged = {
+        add = { text = '++' },
+        change = { text = '▎' },
+        delete = { text = '' },
+        topdelete = { text = '' },
+        changedelete = { text = '▎' },
+      },
+      on_attach = function(buffer)
+        local gs = package.loaded.gitsigns
+
+        local function map(mode, l, r, desc)
+          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+        end
+
+      -- stylua: ignore start
+      map("n", "]h", function()
+        if vim.wo.diff then
+          vim.cmd.normal({ "]c", bang = true })
+        else
+          gs.nav_hunk("next")
+        end
+      end, "Next Hunk")
+      map("n", "[h", function()
+        if vim.wo.diff then
+          vim.cmd.normal({ "[c", bang = true })
+        else
+          gs.nav_hunk("prev")
+        end
+      end, "Prev Hunk")
+      map("n", "]H", function() gs.nav_hunk("last") end, "Last Hunk")
+      map("n", "[H", function() gs.nav_hunk("first") end, "First Hunk")
+      map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+      map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
+      map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
+      map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
+      map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
+      map("n", "<leader>ghp", gs.preview_hunk_inline, "Preview Hunk Inline")
+      map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
+      map("n", "<leader>ghB", function() gs.blame() end, "Blame Buffer")
+      map("n", "<leader>ghd", gs.diffthis, "Diff This")
+      map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
+      map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
+      end,
     },
   },
 
