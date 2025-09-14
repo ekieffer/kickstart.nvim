@@ -90,6 +90,11 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+vim.cmd 'set expandtab'
+vim.cmd 'set tabstop=2'
+vim.cmd 'set softtabstop=2'
+vim.cmd 'set shiftwidth=2'
+
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
@@ -253,7 +258,6 @@ vim.g.lazy_events_config = {
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
   -- Make sure this is the **first** plugin**:
   { 'bwpge/lazy-events.nvim', import = 'lazy-events.import', lazy = false },
 
@@ -476,6 +480,7 @@ require('lazy').setup({
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'remote-sshfs')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
