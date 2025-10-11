@@ -10,6 +10,8 @@ return {
           '-o reconnect',
           '-o ConnectTimeout=5',
           '-o follow_symlinks',
+          '-o Ciphers=chacha20-poly1305@openssh.com',
+          '-o Compression=no',
         },
       },
     }

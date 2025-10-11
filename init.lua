@@ -176,6 +176,11 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+--
+vim.opt.spelllang = { 'en_us' }
+vim.keymap.set('n', '<leader>S', function()
+  vim.opt.spell = not vim.opt.spell:get()
+end, { desc = '[Set] spellchecker' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -218,7 +223,7 @@ require('lazy').setup({
   { import = 'plugins' },
 }, {
   rocks = {
-    server = "https://lumen-oss.github.io/rocks-binaries/",
+    server = 'https://lumen-oss.github.io/rocks-binaries/',
   },
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
