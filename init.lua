@@ -182,6 +182,10 @@ vim.keymap.set('n', '<leader>S', function()
   vim.opt.spell = not vim.opt.spell:get()
 end, { desc = '[Set] spellchecker' })
 
+-- Issue with pyenv default python
+-- which has no neovim package
+vim.g.loaded_python3_provider = 0
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
