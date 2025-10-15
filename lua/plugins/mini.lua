@@ -1,5 +1,13 @@
-return { -- Collection of various small independent plugins/modules
-  'echasnovski/mini.nvim',
+return { 
+
+  -- Collection of various small independent plugins/modules
+  'nvim-mini/mini.nvim',
+  opts = {
+    options = {
+        use_as_default_explorer = true,
+      },
+
+  },
   config = function()
     -- Better Around/Inside textobjects
     --

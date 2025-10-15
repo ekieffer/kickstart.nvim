@@ -223,6 +223,7 @@ vim.g.lazy_events_config = {
 
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  { 'LazyVim/LazyVim', import = 'lazyvim.plugins' },
   { 'bwpge/lazy-events.nvim', import = 'lazy-events.import', lazy = false },
   { import = 'plugins' },
 }, {
