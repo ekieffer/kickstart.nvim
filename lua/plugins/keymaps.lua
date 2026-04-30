@@ -6,7 +6,7 @@ return {
       {
         '<leader>wsq',
         function()
-          vim.cmd 'normal! ciw""'
+          vim.cmd 'normal! ciW""'
           vim.cmd 'normal! P'
         end,
         desc = 'Word Surround Quotes',
